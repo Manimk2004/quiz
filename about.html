@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>About Manikandan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1f4068, #2a5298);
+      color: white;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      animation: fadeIn 1s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .container {
+      background-color: rgba(255,255,255,0.05);
+      padding: 30px;
+      border-radius: 15px;
+      max-width: 800px;
+      width: 90%;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      text-align: center;
+    }
+    h1 {
+      color: #00f2fe;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+      color: #e0f7ff;
+    }
+    a {
+      color: #ffd700;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    a:hover {
+      color: #ff9900;
+    }
+    .profile-img {
+      width: 150px;
+      height: 170px;
+      border-radius: 50%;
+      border: 4px solid #00f2fe;
+      margin-bottom: 20px;
+      object-fit: cover;
+      box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+    .contact {
+      margin-top: 40px;
+      text-align: center;
+    }
+    .contact h2 {
+      margin-bottom: 10px;
+      font-size: 1.6rem;
+      color: #00f2fe;
+    }
+    .contact a {
+      display: inline-block;
+      margin: 10px;
+      font-size: 1.2rem;
+    }
+    .contact i {
+      margin-right: 8px;
+      color: #ffd700;
+    }
+     @media screen and (max-width: 600px) {
+        body{
+            justify-content: center;
+        }
+     }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="mk.jpg" alt="Manikandan Photo" class="profile-img" />
+    <h1>👋 Hi, I'm Manikandan</h1>
+    <p>
+      I’m a passionate <strong>Java Full Stack Developer</strong> with a deep love for clean code, scalable systems, and solving real-world problems through technology.
+    </p>
+    <p>
+      I specialize in Java, Spring Boot, Hibernate, JavaScript, and React to build interactive, efficient, and user-friendly web applications.
+    </p>
+    <p>
+      I thrive on learning new technologies, contributing to open-source, and crafting meaningful digital experiences—just like this interactive quiz!
+    </p>
+<a class="back-link" href="index.html">⬅️ Back to Quiz</a>
+
+    <div class="contact">
+      <h2>📬 Contact</h2>
+      <p><a href="mailto:manikandanmurali@gmail.com"><i class="fas fa-envelope"></i>manikandanmurali@gmail.com</a></p>
+      <p><a href="https://github.com/Manimk2004" target="_blank"><i class="fab fa-github"></i>github.com/Manimk2004</a></p>
+    </div>
+  </div>
+</body>
+</html>

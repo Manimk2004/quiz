@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>✨ Interactive Quiz Time!</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      min-height: 100vh;
+      padding: 20px ; /* prevent overlap with fixed header/footer */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+header.header {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  padding: 20px ;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-bottom: 2px solid #00f2fe;
+  z-index: 1000;
+}
+header.header nav a:hover {
+  color: #00ffd5;
+  transform: scale(1.05);
+}
+
+header.header nav a:hover::after {
+  width: 100%;
+}
+
+    header.header h1 {
+      margin: 0;
+      font-size: 2rem;
+      color: #00f2fe;
+    }
+
+    header.header nav {
+      margin-top: 10px;
+    }
+
+    header.header nav a {
+      color: #00f2fe;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    footer.fixed-footer {
+    
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.3);
+      color: #ccc;
+      text-align: center;
+      padding: 15px 0;
+      font-size: 0.9rem;
+      border-top: 1px solid #00f2fe;
+      z-index: 1000;
+    }
+
+    #login-screen {
+      background: rgba(255, 255, 255, 0.07);
+      border-radius: 20px;
+      padding: 30px 40px;
+      max-width: 750px;
+      width: 100%;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      animation: slideIn 1s ease forwards;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    #login-screen img {
+      width: 100%;
+      max-width: 700px;
+      border-radius: 15px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+      margin-bottom: 25px;
+      transition: transform 0.3s ease;
+    }
+
+    #login-screen img:hover {
+      transform: scale(1.05);
+    }
+
+    .container {
+      background: linear-gradient(135deg, rgba(0,201,167,0.15), rgba(0,178,156,0.15));
+      padding: 20px 25px;
+      border-radius: 15px;
+      box-shadow: inset 0 0 15px rgba(0,201,167,0.3);
+      margin-bottom: 25px;
+      font-size: 1.1em;
+      line-height: 1.5em;
+      color: #ccefff;
+      user-select: none;
+    }
+
+    .about {
+      font-size: 1.15em;
+      margin: 20px auto 35px auto;
+      max-width: 680px;
+      color: #b0d8ff;
+      line-height: 1.6em;
+    }
+
+    .about a {
+      color: #00f2fe;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .about a:hover {
+      color: #00c9a7;
+      text-decoration: underline;
+    }
+
+    .restart-button {
+      background: linear-gradient(90deg, #00c9a7, #00f2fe);
+      border: none;
+      color: #fff;
+      font-weight: 600;
+      font-size: 1.1rem;
+      padding: 14px 40px;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0, 201, 167, 0.6);
+      transition: background 0.4s ease, box-shadow 0.3s ease, transform 0.2s ease;
+      user-select: none;
+    }
+
+    .restart-button:hover {
+      background: linear-gradient(90deg, #00f2fe, #00c9a7);
+      box-shadow: 0 10px 30px rgba(0, 242, 254, 0.8);
+      transform: scale(1.07);
+    }
+
+    .quiz-container {
+      display: none;
+      background-color: #1e2a38;
+      width: 90%;
+      max-width: 600px;
+      margin-top: 40px;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      animation: fadeIn 1s ease-in;
+      text-align: center;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 2em;
+      color: #00f2fe;
+    }
+
+    .choice {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      font-size: 1rem;
+      background: #2d3e50;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s ease, background-color 0.3s ease;
+      user-select: none;
+    }
+
+    .choice:hover {
+      background: #3f5870;
+      transform: scale(1.03);
+    }
+
+    .correct { background-color: #28a745 !important; }
+    .incorrect { background-color: #dc3545 !important; }
+
+    #feedback {
+      font-weight: bold;
+      margin-top: 10px;
+      color: #ffd700;
+    }
+
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #243447;
+      margin-top: 20px;
+      color: white;
+    }
+
+    .summary-table th, .summary-table td {
+      border: 1px solid #444;
+      padding: 10px;
+      text-align: left;
+    }
+
+    .correct-text { color: #28a745; }
+    .incorrect-text { color: #dc3545; }
+
+    .home-button {
+      background-color: #007bff;
+      margin-top: 20px;
+      padding: 12px 25px;
+      border-radius: 25px;
+      font-size: 1rem;
+      cursor: pointer;
+      border: none;
+      color: white;
+      box-shadow: 0 6px 18px rgba(0, 123, 255, 0.6);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .home-button:hover {
+      background-color: #0056b3;
+      transform: scale(1.05);
+    }
+
+    @media screen and (max-width: 600px) {
+      #login-screen { padding: 25px 20px; }
+      .container { font-size: 1em; }
+      .about { font-size: 1em; max-width: 100%; }
+      .choice { font-size: 0.95rem; }
+    }
+    /* About Me link base style */
+a.about-me {
+  position: relative;
+  color: #00f2fe;
+  font-weight: 700;
+  text-decoration: none;
+  padding-bottom: 4px;
+  transition: color 0.3s ease;
+}
+
+/* Glowing underline effect */
+a.about-me::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 0;
+  background: linear-gradient(90deg, #00f2fe, #00c9a7);
+  box-shadow: 0 0 8px #00f2fe, 0 0 15px #00c9a7;
+  border-radius: 2px;
+  transition: width 0.4s ease-in-out;
+}
+
+/* On hover, show full underline */
+a.about-me:hover {
+  color: #00ffd5;
+}
+
+a.about-me:hover::after {
+  width: 100%;
+}
+
+  </style>
+</head>
+<body>
+  <!-- Fixed Header -->
+  <header class="header">
+    <h1>✨ Interactive Quiz Time!</h1>
+    <nav>
+     <h2> <a href="about.html" class="about-me">About Me</a></h2>
+    </nav>
+  </header><br><br>
+
+  <!-- Login/Intro Section -->
+  <div id="login-screen">
+    <img src="p1.jpeg" alt="Quiz Banner" />
+    <div class="container">
+      <p>
+        One popular story claims that the word “quiz” was invented in 1791 by a Dublin theater owner named Richard Daly,
+        who supposedly made a bet that he could introduce a new word into the language within 24 hours by writing the nonsense word “quiz” on walls around the city.
+      </p>
+    </div>
+
+    <p class="about">
+      Hi, I’m <strong><a href="about.html">Manikandan</a></strong> – a passionate <strong>Java Full Stack Developer</strong>.<br>
+    I thrive on learning new technologies, contributing to open-source, and crafting meaningful digital experiences—just like this interactive quiz!
+   <br><br>   Let’s see how well you know the world. Ready to take the quiz?
+    </p>
+
+    <button onclick="startQuiz()" class="restart-button">Start Quiz</button>
+  </div>
+
+  <!-- Quiz Container -->
+  <div class="quiz-container" id="quiz">
+    <h1>🧠 Quiz Time!</h1>
+    <div class="question">
+      <p id="question-text"><i>Loading...</i></p>
+      <div class="choices">
+        <button class="choice" onclick="checkAnswer(0)"></button>
+        <button class="choice" onclick="checkAnswer(1)"></button>
+        <button class="choice" onclick="checkAnswer(2)"></button>
+        <button class="choice" onclick="checkAnswer(3)"></button>
+      </div>
+    </div>
+    <p id="feedback"></p>
+  </div>
+<br><br><br>
+  <!-- Fixed Footer -->
+  <footer class="fixed-footer">
+    <p>&copy; 2025 Manikandan. All rights reserved.</p>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    function startQuiz() {
+      document.getElementById("login-screen").style.display = "none";
+      document.getElementById("quiz").style.display = "block";
+      showQuestion();
+    }
+
+    const questions = [
+      { question: "What city is known as The Eternal City?", choices: ["Spain", "Egypt", "Italy", "Rome"], correct: 3 },
+      { question: "Which is the only continent with land in all four hemispheres?", choices: ["China", "Africa", "England", "Netherlands"], correct: 1 },
+      { question: "In what country is the Chernobyl nuclear plant located?", choices: ["Ukraine", "Russia", "Japan", "India"], correct: 0 },
+      { question: "How many stars are there on the flag of China?", choices: ["3", "5", "6", "4"], correct: 1 },
+      { question: "What is the currency of Mongolia?", choices: ["Yen", "Kirgin", "Tugrik", "Topchok"], correct: 2 },
+      { question: "In 2013 which two airlines merged to become the world’s largest airline?", choices: ["Air France and KLM", "British Airways and Iberia", "Lufthansa and Germanwings", "American Airlines and US Airways"], correct: 3 },
+      { question: "Which body part uses the most oxygen?", choices: ["Lungs", "Heart", "Brain", "Nose"], correct: 2 },
+      { question: "Which country built the replica of Paris?", choices: ["Rome", "Egypt", "China", "Europe"], correct: 2 },
+      { question: "How many bones do sharks have?", choices: ["39", "115", "68", "0"], correct: 3 },
+      { question: "In which country is the largest desert located?", choices: ["India", "Egypt", "Antarctica", "Africa"], correct: 2 },
+    ];
+
+    let currentQuestion = 0;
+    let correctAnswers = 0;
+    const userSelections = [];
+
+    function showQuestion() {
+      const questionText = document.getElementById("question-text");
+      const choices = document.querySelectorAll(".choice");
+      const current = questions[currentQuestion];
+
+      questionText.innerHTML = `<strong>Q${currentQuestion + 1}:</strong> ${current.question}`;
+      choices.forEach((choice, index) => {
+        choice.textContent = current.choices[index];
+        choice.classList.remove("correct", "incorrect");
+        choice.disabled = false;
+      });
+
+      document.getElementById("feedback").textContent = "";
+    }
+
+    function checkAnswer(selected) {
+      const choices = document.querySelectorAll(".choice");
+      const feedback = document.getElementById("feedback");
+      const correctIndex = questions[currentQuestion].correct;
+
+      userSelections.push({ question: questions[currentQuestion].question, selected, correct: correctIndex });
+
+      choices.forEach((choice, index) => {
+        choice.disabled = true;
+        if (index === correctIndex) choice.classList.add("correct");
+      });
+
+      if (selected === correctIndex) {
+        feedback.textContent = "🎉 Correct!";
+        correctAnswers++;
+      } else {
+        feedback.textContent = "❌ Incorrect!";
+        if (choices[selected]) choices[selected].classList.add("incorrect");
+      }
+
+      setTimeout(() => {
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+          showQuestion();
+        } else {
+          showSummary();
+          showScorePopup();
+        }
+      }, 1500);
+    }
+
+    function showSummary() {
+      const quizContainer = document.getElementById("quiz");
+      quizContainer.innerHTML = `
+        <h2>📊 Quiz Summary</h2>
+        <table class="summary-table">
+          <thead>
+            <tr><th>Question</th><th>Your Answer</th><th>Correct Answer</th></tr>
+          </thead>
+          <tbody class="summary"></tbody>
+        </table>
+      `;
+
+      const summaryTable = document.querySelector(".summary");
+
+      userSelections.forEach((selection, index) => {
+        const q = questions[index];
+        const isCorrect = selection.selected === selection.correct;
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${selection.question}</td>
+          <td class="${isCorrect ? 'correct-text' : 'incorrect-text'}">${q.choices[selection.selected] ?? "No Answer"}</td>
+          <td>${q.choices[selection.correct]}</td>
+        `;
+        summaryTable.appendChild(row);
+      });
+
+      const homeButton = document.createElement("button");
+      homeButton.textContent = "Go Back Home";
+      homeButton.className = "home-button";
+      homeButton.onclick = () => location.reload();
+      quizContainer.appendChild(homeButton);
+    }
+
+    function showScorePopup() {
+      Swal.fire({
+        title: `🎉 Your Score: <span style="color:#00c9a7;">${correctAnswers} / ${questions.length}</span> 🎉`,
+        icon: 'success',
+        html: `<p style="font-size:1.2em; margin-top:10px; color:#fff;">
+                 You’ve completed the quiz! <br> Great job, keep shining! ✨
+               </p>`,
+        background: '#1e2a38',
+        confirmButtonText: 'Awesome!',
+        confirmButtonColor: '#00c9a7',
+      });
+    }
+  </script>
+</body>
+</html>
