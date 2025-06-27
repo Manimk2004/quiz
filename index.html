@@ -244,6 +244,21 @@ header.header nav a:hover::after {
       .container { font-size: 1em; }
       .about { font-size: 1em; max-width: 100%; }
       .choice { font-size: 0.95rem; }
+      .content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .content img {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    margin-bottom: 15px;
+  }
+
+  .content p {
+    font-size: 1em;
+  }
     }
     /* About Me link base style */
 a.about-me {
@@ -311,7 +326,7 @@ It reminds us how unique and connected we are to our planet.
     <p class="about">
       Hi, I’m <strong><a href="about.html">Manikandan</a></strong> – a passionate <strong>Java Full Stack Developer</strong>.<br>
     I thrive on learning new technologies, contributing to open-source, and crafting meaningful digital experiences—just like this interactive quiz!
-  Click my name to know more about Myself. <br><br>  <strong>"Dare to know, dare to quiz!"</strong> <br> Let’s see how well you know the world. Ready to take the quiz?
+  Click my name to know more about Myself <br><br>  <strong>"Dare to know, dare to quiz!"</strong> <br> Let’s see how well you know the world. Ready to take the quiz?
     </p>
 
     <button onclick="startQuiz()" class="restart-button">Start Quiz</button>
